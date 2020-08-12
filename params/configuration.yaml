@@ -1,0 +1,15 @@
+# Format:
+#	path1: [poseTopic, pathTopic, rate]
+#	path2: [poseTopic, pathTopic, rate]
+#
+# Example:
+#	path0: [myPoseTopic, myPathTopic, 0.3]
+#
+# Note:
+#	Path count starts from 0
+#	Rate is in Hz
+
+path0: ['HumanPose', 'HumanPath', 0.3]
+path1: ['UAV1Pose', 'UAV1Path', 0.3]
+path2: ['UAV2Pose', 'UAV2Path', 0.3]
+path3: ['UAV3Pose', 'UAV3Path', 0.3]

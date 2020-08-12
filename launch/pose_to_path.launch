@@ -1,0 +1,6 @@
+<launch>	
+  <!-- Launch husky odom to tf broadcaster -->
+  <node pkg="pose_to_path" type="pose_to_path.py" name="pose_to_path_publisher" output="screen">
+      <rosparam command="load" file="$(find pose_to_path)/params/configuration.yaml" />
+  </node>
+</launch>

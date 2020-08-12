@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ros_python3)
+project(pose_to_path)
 
 # CMAKE minimal description for ROS package
 
