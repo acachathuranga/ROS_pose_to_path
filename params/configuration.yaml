@@ -1,15 +1,18 @@
 # Format:
-#	path1: [poseTopic, pathTopic, rate]
-#	path2: [poseTopic, pathTopic, rate]
+#	path1: [poseTopic, pathTopic, publish_rate, sample_rate]
+#	path2: [poseTopic, pathTopic, publish_rate, sample_rate]
 #
 # Example:
-#	path0: [myPoseTopic, myPathTopic, 0.3]
+#	path0: [myPoseTopic, myPathTopic, 0.3, 2]
 #
 # Note:
 #	Path count starts from 0
-#	Rate is in Hz
+#	Publish and sample rates are in Hz
+#
+# To sample at pose_message rate, set sample_rate to 0 (Otherwise leave this empty)
+# To publish path at sample rate, set publish_rate to 0 (Otherwise leave this empty)
 
-path0: ['HumanPose', 'HumanPath', 0.3]
-path1: ['UAV1Pose', 'UAV1Path', 0.3]
-path2: ['UAV2Pose', 'UAV2Path', 0.3]
-path3: ['UAV3Pose', 'UAV3Path', 0.3]
+path0: ['HumanPose', 'HumanPath', 0.3, 2]
+path1: ['UAV1Pose', 'UAV1Path', 0.3, 2]
+path2: ['UAV2Pose', 'UAV2Path', 0.3, 2]
+path3: ['UAV3Pose', 'UAV3Path', 0.3, 2]

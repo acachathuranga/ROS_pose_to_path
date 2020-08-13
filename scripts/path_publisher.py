@@ -6,7 +6,7 @@ from nav_msgs.msg import Path
 
 class PathPublisher():
 
-    def __init__(self, poseTopic, pathTopic, publishRate=0):
+    def __init__(self, poseTopic, pathTopic, publishRate=0, sampleRate=0):
         """ Pose to Path Publisher
 
             :poseTopic: Subscribed pose topic (Message type : geometry_msgs/PoseWithCovarianceStamped)
@@ -15,6 +15,12 @@ class PathPublisher():
                                         at pose message rate
         """
         self.pub = rospy.Publisher(pathTopic, Path, queue_size=1000)
+
+        if sampleRate==0 :
+            self.sample_interval = 0
+        else:
+            self.sample_interval = 1 / sampleRate
+        self.last_msg_time = 0
 
         if (publishRate==0):
             self.realtime = True
@@ -29,19 +35,26 @@ class PathPublisher():
         print ("Publishing from\t Pose: /%s to Path: /%s" %(poseTopic, pathTopic))
     
     def poseCallback(self, data):
-        self.path.header = data.header
-        self.path.header.frame_id = 'odom'
-
         
-        pose_ = PoseStamped()
-        pose_.header = data.header
-        pose_.header.frame_id = "odom"
-        pose_.pose = data.pose.pose
+        msg_time = data.header.stamp.secs + data.header.stamp.nsecs * 1e-9
+        
+        if (msg_time - self.last_msg_time) > self.sample_interval:
+            self.last_msg_time = msg_time
 
-        self.path.poses.append(pose_)
+            # Read Pose Message and Append to Path
+            self.path.header = data.header
+            self.path.header.frame_id = 'odom'
 
-        if self.realtime:
-            self.publishPath()
+            
+            pose_ = PoseStamped()
+            pose_.header = data.header
+            pose_.header.frame_id = "odom"
+            pose_.pose = data.pose.pose
+
+            self.path.poses.append(pose_)
+
+            if self.realtime:
+                self.publishPath()
 
     def publishPath(self):
         self.pub.publish(self.path)
