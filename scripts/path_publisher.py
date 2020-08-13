@@ -19,25 +19,27 @@ class PathPublisher():
         if sampleRate==0 :
             self.sample_interval = 0
         else:
-            self.sample_interval = 1 / sampleRate
+            self.sample_interval = 1.0 / sampleRate
         self.last_msg_time = 0
 
-        if (publishRate==0):
+        if publishRate == 0:
             self.realtime = True
         else:
             self.realtime = False
             interval = 1 / publishRate       # Milliseconds
-            self.timer = ClassTimer(self.publishPath, 2)
+            self.timer = ClassTimer(self.publishPath, interval)
+
+        self.visualization_time = rospy.get_param(rospy.get_name()+'/visualization_time')
 
         self.path = Path()
         sub = rospy.Subscriber(poseTopic, PoseWithCovarianceStamped, self.poseCallback)
 
-        print ("Publishing from\t Pose: /%s to Path: /%s" %(poseTopic, pathTopic))
+        print ("Publishing from\t Pose: /%s to Path: /%s   pr: %.2f, sr: %.2f" %(poseTopic, pathTopic, publishRate, sampleRate))
     
     def poseCallback(self, data):
         
         msg_time = data.header.stamp.secs + data.header.stamp.nsecs * 1e-9
-        
+
         if (msg_time - self.last_msg_time) > self.sample_interval:
             self.last_msg_time = msg_time
 
@@ -52,6 +54,13 @@ class PathPublisher():
             pose_.pose = data.pose.pose
 
             self.path.poses.append(pose_)
+            
+            ## Keeping only a specified visualization time
+            if self.visualization_time > 0:
+                for i in range(0, len(self.path.poses)):
+                    if (msg_time - self.path.poses[i].header.stamp.secs) < self.visualization_time:
+                        self.path.poses = self.path.poses[i:]
+                        break
 
             if self.realtime:
                 self.publishPath()

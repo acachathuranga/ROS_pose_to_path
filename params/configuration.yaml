@@ -12,7 +12,11 @@
 # To sample at pose_message rate, set sample_rate to 0 (Otherwise leave this empty)
 # To publish path at sample rate, set publish_rate to 0 (Otherwise leave this empty)
 
-path0: ['HumanPose', 'HumanPath', 0.3, 2]
-path1: ['UAV1Pose', 'UAV1Path', 0.3, 2]
-path2: ['UAV2Pose', 'UAV2Path', 0.3, 2]
-path3: ['UAV3Pose', 'UAV3Path', 0.3, 2]
+path0: ['HumanPose', 'HumanPath', 0, 5]
+path1: ['UAV1Pose', 'UAV1Path', 0, 5]
+path2: ['UAV2Pose', 'UAV2Path', 0, 5]
+path3: ['UAV3Pose', 'UAV3Path', 0, 5]
+
+# If specified, only the last number of seconds specified below will be visualized in the path
+# If not specified or set to 0, full path will be visualized
+visualization_time: 0
