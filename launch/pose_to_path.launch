@@ -3,4 +3,7 @@
   <node pkg="pose_to_path" type="pose_to_path.py" name="pose_to_path_publisher" output="screen">
       <rosparam command="load" file="$(find pose_to_path)/params/configuration.yaml" />
   </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="uav1_odom_tf_broadcaster" args="0 0 0 0 0 0  odom camera_1_odom_frame 100" />
+  <node pkg="tf" type="static_transform_publisher" name="uav2_odom_tf_broadcaster" args="0 0 0 0 0 0  odom camera_2_odom_frame 100" />
 </launch>
